@@ -1,0 +1,11 @@
+CompileFlags:
+  Compiler: C:/msys64/ucrt64/bin/g++.exe
+  Add:
+    - "-IC:/msys64/ucrt64/include/c++/15.2.0"
+    - "-IC:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32"
+    - "-IC:/msys64/ucrt64/include"
+    - "--target=x86_64-w64-mingw32"
+
+
+
+
