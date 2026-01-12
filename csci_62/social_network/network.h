@@ -4,6 +4,9 @@
 #include "user.h"
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 class Network{
 public:
@@ -33,9 +36,18 @@ public:
     //post: returns the number of users in network
     int numUsers();
 
+    //pre: none 
+    //post: initializes all of the network's info from file
+    void readUsers(const char* fname);
+
+    //pre: none
+    //post: writes all of the network's information to a file 
+    void writeUsers(const char* fname);
+
 
 
 private:
+    //vector of pointer to the user
     std::vector<User*>users_;
 };
 
