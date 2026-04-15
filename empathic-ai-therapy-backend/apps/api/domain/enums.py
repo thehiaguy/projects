@@ -1,0 +1,33 @@
+from enum import Enum
+
+
+class ConceptLabel(str, Enum):
+    """
+    Purpose:
+        Enumerate allowed session-scoped concept labels used throughout prompting, validation, and Neo4j repos.
+    """
+
+    PERSON = "Person"
+    TRIGGER = "Trigger"
+    EMOTION = "Emotion"
+    BELIEF = "Belief"
+    NEED = "Need"
+    GOAL = "Goal"
+    ACTION = "Action"
+    EVENT = "Event"
+
+
+class GraphRelationshipType(str, Enum):
+    """
+    Purpose:
+        Enumerate allowed relationship types for the therapy knowledge graph.
+    """
+
+    HAS_UTTERANCE = "HAS_UTTERANCE"
+    MENTIONS = "MENTIONS"
+    EVOKES = "EVOKES"
+    DRIVES = "DRIVES"
+    LEADS_TO = "LEADS_TO"
+    AFFECTS = "AFFECTS"
+    SUPPORTS = "SUPPORTS"
+    CONFLICTS_WITH = "CONFLICTS_WITH"

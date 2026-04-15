@@ -1,0 +1,35 @@
+{
+  "name": "empathic-ai-therapy-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "postinstall": "find node_modules -name '*.node' -exec xattr -d com.apple.quarantine {} \\; 2>/dev/null; true"
+  },
+  "dependencies": {
+    "@humeai/voice-react": "^0.2.14",
+    "@p5-wrapper/next": "^3.0.1",
+    "@p5-wrapper/react": "^5.0.2",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@types/three": "^0.183.1",
+    "hume": "^0.15.15",
+    "maath": "^0.10.8",
+    "next": "16.1.6",
+    "p5": "^2.2.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-p5": "^1.4.1",
+    "simplex-noise": "^4.0.3",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4"
+  }
+}

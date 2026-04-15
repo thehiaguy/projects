@@ -1,0 +1,106 @@
+erDiagram
+    Session {
+        string sessionId PK
+        int createdAt
+        int endedAt
+        string latestGoalCanonical
+        int goalUpdatedAt
+    }
+
+    Utterance {
+        string utteranceId PK
+        string sessionId FK
+        string role
+        string text
+        string messageId
+        int timestampMs
+        int createdAt
+    }
+
+    ProsodyFrame {
+        string frameId PK
+        string sessionId FK
+        string messageId
+        string topJson
+        int createdAt
+    }
+
+    Person {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Trigger {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Emotion {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Belief {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Need {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Goal {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Action {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Event {
+        string sessionId PK
+        string canonical PK
+        int createdAt
+        int lastSeenAt
+    }
+
+    Session ||--o{ Utterance : HAS_UTTERANCE
+    Session ||..o{ ProsodyFrame : scopes_by_sessionId
+
+    Utterance ||--o{ Person : MENTIONS
+    Utterance ||--o{ Trigger : MENTIONS
+    Utterance ||--o{ Emotion : MENTIONS
+    Utterance ||--o{ Belief : MENTIONS
+    Utterance ||--o{ Need : MENTIONS
+    Utterance ||--o{ Goal : MENTIONS
+    Utterance ||--o{ Action : MENTIONS
+    Utterance ||--o{ Event : MENTIONS
+
+    Trigger ||--o{ Emotion : EVOKES
+    Belief ||--o{ Emotion : DRIVES
+    Emotion ||--o{ Action : LEADS_TO
+    Action ||--o{ Goal : AFFECTS
+    Need ||--o{ Goal : SUPPORTS
+    Need ||--o{ Goal : CONFLICTS_WITH
+
+%% Notes from implementation-plan.md:
+%% - Session and Utterance use unique single-property constraints.
+%% - Each concept label uses composite uniqueness on (sessionId, canonical).
+%% - ProsodyFrame is stored by session/message metadata; the plan does not require a first-class graph edge for it.

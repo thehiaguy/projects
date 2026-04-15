@@ -1,0 +1,22 @@
+[project]
+name = "empathic-ai-therapy-backend-api"
+version = "0.1.0"
+description = "FastAPI + Hume EVI + Gemini + Neo4j"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic",
+  "pydantic-settings",
+  "httpx",
+  "neo4j",
+  "python-multipart",
+  "jsonschema",
+  "langchain-core",
+  "langchain-google-vertexai",
+  "google-cloud-aiplatform",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

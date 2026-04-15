@@ -1,0 +1,137 @@
+classDiagram
+    class SessionRecord {
+        +string session_id
+        +int created_at_ms
+        +int ended_at_ms
+        +string status
+        +dict metadata
+    }
+
+    class UtteranceRecord {
+        +string utterance_id
+        +string session_id
+        +string role
+        +string text
+        +string message_id
+        +int timestamp_ms
+    }
+
+    class ProsodyFrameRecord {
+        +string frame_id
+        +string session_id
+        +string message_id
+        +dict top_scores
+        +int created_at_ms
+    }
+
+    class KgNode {
+        +string id
+        +string label
+        +string canonical
+        +dict properties
+    }
+
+    class KgEdge {
+        +string id
+        +string type
+        +string source
+        +string target
+        +dict properties
+    }
+
+    class Receipt {
+        +string receipt_id
+        +string message_id
+        +string tool_name
+        +string evidence_quote
+        +list applied_node_ids
+        +list applied_edge_ids
+        +bool verified
+        +list warnings
+    }
+
+    class KgDiff {
+        +list nodes_upsert
+        +list edges_upsert
+        +list receipts
+    }
+
+    class GraphSnapshot {
+        +list nodes
+        +list edges
+    }
+
+    class TopConceptSummary {
+        +string label
+        +string canonical
+        +int mention_count
+        +float score
+    }
+
+    class SessionSummary {
+        +string summary
+        +list top_concepts
+    }
+
+    class WsEnvelope {
+        +string type
+        +string session_id
+        +dict payload
+        +int sent_at_ms
+        +string correlation_id
+    }
+
+    class EviUserMessagePayload {
+        +string message_id
+        +string role
+        +string content
+        +bool interim
+        +dict prosody_scores
+        +int timestamp_ms
+        +dict raw_event
+    }
+
+    class EviAssistantMessagePayload {
+        +string message_id
+        +string role
+        +string content
+        +int timestamp_ms
+    }
+
+    class KgDiffPayload {
+        +list nodes_upsert
+        +list edges_upsert
+        +list receipts
+        +list warnings
+    }
+
+    class ToolCallsAppliedPayload {
+        +list calls
+        +list dropped_calls
+    }
+
+    class ServerErrorPayload {
+        +string code
+        +string message
+        +string correlation_id
+        +bool retryable
+        +dict details
+    }
+
+    SessionSummary --> TopConceptSummary : contains
+    GraphSnapshot --> KgNode : contains
+    GraphSnapshot --> KgEdge : contains
+    KgDiff --> KgNode : nodes_upsert
+    KgDiff --> KgEdge : edges_upsert
+    KgDiff --> Receipt : receipts
+    KgDiffPayload --> KgNode : nodes_upsert
+    KgDiffPayload --> KgEdge : edges_upsert
+    KgDiffPayload --> Receipt : receipts
+    WsEnvelope --> EviUserMessagePayload : payload for evi.user_message.final
+    WsEnvelope --> EviAssistantMessagePayload : payload for evi.assistant_message
+    WsEnvelope --> KgDiffPayload : payload for kg.diff
+    WsEnvelope --> ToolCallsAppliedPayload : payload for kg.tool_calls_applied
+    WsEnvelope --> ServerErrorPayload : payload for server.error
+
+%% This diagram reflects the data contracts described in implementation-plan.md
+%% and the backend domain/ws scaffolding under apps/api/.

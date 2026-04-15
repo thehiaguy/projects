@@ -1,0 +1,45 @@
+sequenceDiagram
+    participant User
+    participant Web as Next.js Frontend
+    participant Hume as Hume EVI
+    participant API as FastAPI Backend
+    participant Gemini as Gemini KG Extractor
+    participant Neo4j as Neo4j Graph
+
+    User->>Web: Start session
+    Web->>API: POST /v1/sessions
+    API->>Neo4j: Create Session node
+    API-->>Web: Return session_id
+
+    Web->>API: POST /v1/hume/access-token
+    API->>Hume: POST /oauth2-cc/token
+    Hume-->>API: access_token, expires_in
+    API-->>Web: access_token, expires_in
+
+    Web->>Hume: Connect direct EVI websocket
+    User->>Hume: Send live voice audio
+    Hume-->>Web: user_message and prosody events
+    Hume-->>Web: assistant_message and audio_output
+
+    Web->>API: Connect WS /ws/session/{session_id}
+    Web->>API: Send evi.user_message.final
+    API->>Neo4j: Upsert Utterance
+    API->>Neo4j: Insert ProsodyFrame
+    API->>Neo4j: Fetch graph context
+    API->>Gemini: Prompt with forced KG tools
+    Gemini-->>API: Return tool calls or skip_kg_update
+    API->>Neo4j: Apply concept, relation, mention, and goal upserts
+    API-->>Web: Send kg.diff
+    API-->>Web: Send kg.tool_calls_applied
+
+    Web->>API: GET /v1/sessions/{session_id}/graph
+    API->>Neo4j: Fetch graph snapshot
+    API-->>Web: Return nodes and edges
+
+    User->>Web: End session
+    Web->>API: POST /v1/sessions/{session_id}/end
+    API->>Neo4j: Set Session.endedAt and compute top concepts
+    API-->>Web: Return summary and top_concepts
+
+%% Voice stays direct browser <-> Hume.
+%% FastAPI handles the knowledge stream and graph updates.
